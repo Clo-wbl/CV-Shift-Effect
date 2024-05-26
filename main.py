@@ -5,9 +5,6 @@ from matplotlib.patches import Circle
 from homography_computation import homography_computation
 from modify_parse_effect import modify_parse_effect
 
-# from skimage import transform
-# from skimage.io import imread, imshow
-
 img = Image.open("./img/Gunkanjima.png")
 plt.figure(num=None, figsize=(8, 6), dpi=80)
 plt.imshow(img)
@@ -34,15 +31,32 @@ for point in projected_points:
 
 plt.show()
 
+# Computing Homography
 H = homography_computation(actual_points,projected_points)
+print("Homography matrix : \n")
 print(H)
 
-# have to zoom
-
-
 img_projected = modify_parse_effect(img, H)
+
+# Try to zoom into the image ; doesn't work - in case you see what is wrong,
+# I would be glad that you enlighten me on this subject
+# zm = 2
+# Z = [[zm, 0, 0], [0, zm, 0], [0, 0, 1]]
+
+# height, width, channels = img_projected.shape
+
+# for y in range(height):
+#     for x in range(width):
+#         coord_zoom = np.dot(Z,np.array([x, y, 1]))
+#         xx, yy = int(coord_zoom[0]), int(coord_zoom[1])
+#         if 0 <= xx < width and 0 <= yy < height:
+#             img_projected[yy,xx]=img_projected[y,x]
+
 
 fig, ax = plt.subplots(1, 2, figsize=(15, 10), dpi=80)
 ax[0].imshow(img)
 ax[1].imshow(img_projected)
 plt.show()
+
+# Comments : the building's roof is now parallel to the horizontal axis
+# Transformation worked and homography matrix is relevant
